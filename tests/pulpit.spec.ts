@@ -21,7 +21,7 @@ test('quick payment with correct data', async ({ page }) => {
 
 });
 
-test.only('quick payment without entering recipients details', async ({ page }) => { 
+test.only('quick payment without entering recipient details', async ({ page }) => { 
   await page.goto('https://demo-bank.vercel.app/');
   await page.getByTestId('login-input').fill('test1234');
   await page.getByTestId('password-input').fill('Password');
