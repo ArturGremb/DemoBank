@@ -35,8 +35,7 @@ test('quick payment without entering recipient details', async ({ page }) => {
 
 });
 
-
-test.only('quick payment without entering amount', async ({ page }) => { 
+test('quick payment without entering amount', async ({ page }) => { 
   await page.goto('https://demo-bank.vercel.app/');
   await page.getByTestId('login-input').fill('test1234');
   await page.getByTestId('password-input').fill('Password');
@@ -50,9 +49,17 @@ test.only('quick payment without entering amount', async ({ page }) => {
 
 });
 
+test.only('quick payment without entering title', async ({ page }) => { 
+  await page.goto('https://demo-bank.vercel.app/');
+  await page.getByTestId('login-input').fill('test1234');
+  await page.getByTestId('password-input').fill('Password');
+  await page.getByTestId('login-button').click();
 
+  await page.locator('#widget_1_transfer_receiver').selectOption('2');
+  await page.locator('#widget_1_transfer_amount').fill('39');
+  await page.locator('#execute_btn').click();
 
+  await expect(page.locator('#error_widget_1_transfer_title')).toHaveText('pole wymagane');
 
-
-
+});
 
