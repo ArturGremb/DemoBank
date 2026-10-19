@@ -82,7 +82,7 @@ test('phone top up with correct data', async ({ page }) => {
 
 });
 
-test.only('phone top up without selecting phone number', async ({ page }) => { 
+test('phone top up without selecting phone number', async ({ page }) => { 
   await page.goto('https://demo-bank.vercel.app/');
   await page.getByTestId('login-input').fill('test1234');
   await page.getByTestId('password-input').fill('Password');
@@ -96,4 +96,17 @@ test.only('phone top up without selecting phone number', async ({ page }) => {
 
 });
 
-//test.only('phone top up without entering amount ')
+test('phone top up without entering amount', async ({page}) => {
+  await page.goto('https://demo-bank.vercel.app/');
+  await page.getByTestId('login-input').fill('test1234');
+  await page.getByTestId('password-input').fill('Password');
+  await page.getByTestId('login-button').click();
+
+  await page.locator('#widget_1_topup_receiver').selectOption({index:2});
+  
+  await page.locator('#uniform-widget_1_topup_agreement').check();
+  await page.getByRole('button', { name: 'doładuj telefon' }).click();
+
+  await expect(page.locator('#error_widget_1_topup_amount')).toHaveText('pole wymagane');
+ 
+})
