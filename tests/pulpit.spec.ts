@@ -65,7 +65,7 @@ test('quick payment without entering title', async ({ page }) => {
 });
 
 // topup tests
-test('phone top up with correct data', async ({ page }) => { 
+test.only('phone top up with correct data', async ({ page }) => { 
   await page.goto('https://demo-bank.vercel.app/');
   await page.getByTestId('login-input').fill('test1234');
   await page.getByTestId('password-input').fill('Password');
@@ -74,7 +74,7 @@ test('phone top up with correct data', async ({ page }) => {
   //await page.locator('#widget_1_topup_receiver').selectOption('502 xxx xxx'); //wybieram pełny tekst z atrybutu value
   await page.locator('#widget_1_topup_receiver').selectOption({index: 2}); //wybieram po indeksie
   await page.locator('#widget_1_topup_amount').fill('39');
-  await page.locator('#uniform-widget_1_topup_agreement').check();
+  await page.locator('#uniform-widget_1_topup_agreement span').check(); //checkowanie checkboxa
   await page.locator('#execute_phone_btn').click();
   await page.getByTestId('close-button').click();
 
