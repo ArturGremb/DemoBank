@@ -2,25 +2,58 @@ import {test, expect} from '@playwright/test';
 test.describe('Pulpit tests', () => {
 });
 
-//quick payment tests
-test('quick payment with correct data', async ({ page }) => { 
-  await page.goto('https://demo-bank.vercel.app/');
-  await page.getByTestId('login-input').fill('test1234');
-  await page.getByTestId('password-input').fill('Password');
+// quick payment tests - podstawowy test
+// test('quick payment with correct data', async ({ page }) => { 
+//   await page.goto('https://demo-bank.vercel.app/');
+//   await page.getByTestId('login-input').fill('test1234');
+//   await page.getByTestId('password-input').fill('Password');
+//   await page.getByTestId('login-button').click();
+
+//   // wait for page to fully load:
+//   await page.waitForLoadState("domcontentloaded")
+
+//   await page.locator('#widget_1_transfer_receiver').selectOption('3');
+//   await page.locator('#widget_1_transfer_amount').fill('321');
+//   await page.locator('#widget_1_transfer_title').fill('kolacja');
+//   await page.getByRole('button', { name: 'wykonaj' }).click();
+//   await page.getByTestId('close-button').click();
+
+//   await expect(page.locator('#show_messages')).toHaveText('Przelew wykonany! Michael Scott - 321,00PLN - kolacja');
+
+// });
+
+//quick payment tests - refaktoryzacja - dodanie zmiennych
+test.only('quick payment with correct data', async ({ page }) => { 
+
+  //Arrange
+  const baseURL = 'https://demo-bank.vercel.app/';
+  const userId = 'test1234';
+  const userPassword = 'Password';
+
+  const reciverId = '3';
+  const transferAmount = '321';
+  const transferTitle = 'kolacja';
+  
+  //Act
+  await page.goto(baseURL);
+  await page.getByTestId('login-input').fill(userId);
+  await page.getByTestId('password-input').fill(userPassword);
   await page.getByTestId('login-button').click();
 
   // wait for page to fully load:
   await page.waitForLoadState("domcontentloaded")
 
-  await page.locator('#widget_1_transfer_receiver').selectOption('3');
-  await page.locator('#widget_1_transfer_amount').fill('321');
-  await page.locator('#widget_1_transfer_title').fill('kolacja');
+  await page.locator('#widget_1_transfer_receiver').selectOption(reciverId);
+  await page.locator('#widget_1_transfer_amount').fill(transferAmount);
+  await page.locator('#widget_1_transfer_title').fill(transferTitle);
   await page.getByRole('button', { name: 'wykonaj' }).click();
   await page.getByTestId('close-button').click();
 
-  await expect(page.locator('#show_messages')).toHaveText('Przelew wykonany! Michael Scott - 321,00PLN - kolacja');
+  //Assert
+  await expect(page.locator('#show_messages')).toHaveText(`Przelew wykonany! Michael Scott - ${transferAmount},00PLN - ${transferTitle}`); //zamiast apostrofów można użyć backticków i wstawić zmienne w formacie ${nazwa_zmiennej}
 
 });
+
 
 test('quick payment without entering recipient details', async ({ page }) => { 
   await page.goto('https://demo-bank.vercel.app/');
@@ -65,7 +98,7 @@ test('quick payment without entering title', async ({ page }) => {
 });
 
 // topup tests
-test.only('phone top up with correct data', async ({ page }) => { 
+test('phone top up with correct data', async ({ page }) => { 
   await page.goto('https://demo-bank.vercel.app/');
   await page.getByTestId('login-input').fill('test1234');
   await page.getByTestId('password-input').fill('Password');

@@ -1,16 +1,48 @@
 import { test, expect } from '@playwright/test';
 
-//walidacja pola login, pole login jest puste
-test('login field is empty', async ({ page }) => {
-  await page.goto('https://demo-bank.vercel.app/');
-  await page.getByTestId('password-input').click();
-  await page.getByTestId('password-input').fill('Password');
-  await page.getByTestId('login-input').click();
-  await page.getByTestId('login-input').blur(); // funkcja blur() na polu password służy do opuszczenia pola na którym w danej chwili jesteśmy
-  await page.getByTestId('error-login-id').click();
-  
-  await expect(page.getByTestId('error-login-id')).toHaveText('pole wymagane')
+//poprawne logowanie - podstawowy test
+// test('login with correct credentials', async ({ page }) => {
+//   await page.goto('https://demo-bank.vercel.app/');
+//   await page.getByTestId('login-input').fill('test1234');
+//   await page.getByTestId('password-input').fill('Password');
+//   await page.getByTestId('login-button').click();
+//   await page.getByTestId('user-name').click();
+
+//   await expect(page.getByTestId('user-name')).toHaveText('Jan Demobankowy');
+// });
+
+
+//poprawne logowanie - refaktoryzacja - dodanie zmiennych
+test.only('login with correct credentials', async ({ page }) => {
+
+  //Arrange
+  const baseURL = 'https://demo-bank.vercel.app/';
+  const userId = 'test1234';
+  const userPassword = 'Password';
+  const expectedUserName = 'Jan Demobankowy';
+
+//Act
+  await page.goto(baseURL);
+  await page.getByTestId('login-input').fill(userId);
+  await page.getByTestId('password-input').fill(userPassword);
+  await page.getByTestId('login-button').click();
+
+  //Assert
+  await expect(page.getByTestId('user-name')).toHaveText(expectedUserName);
 });
+
+//walidacja pola login, pole login jest puste - podstawowy test
+// test('login field is empty', async ({ page }) => {
+//   await page.goto('https://demo-bank.vercel.app/');
+//   await page.getByTestId('password-input').click();
+//   await page.getByTestId('password-input').fill('Password');
+//   await page.getByTestId('login-input').click();
+//   await page.getByTestId('login-input').blur(); // funkcja blur() na polu password służy do opuszczenia pola na którym w danej chwili jesteśmy
+//   await page.getByTestId('error-login-id').click();
+  
+//   await expect(page.getByTestId('error-login-id')).toHaveText('pole wymagane')
+// });
+
 
 //walidacja pola login, wprowadzony login jest za krórki
 test('entered login is too short', async ({page}) => {
@@ -56,13 +88,3 @@ test('login button to be enabled', async ({page}) => {
   await expect (page.getByTestId('login-button')).toBeEnabled
 })
 
-//poprawne logowanie
-test('login with correct credentials', async ({ page }) => {
-  await page.goto('https://demo-bank.vercel.app/');
-  await page.getByTestId('login-input').fill('test1234');
-  await page.getByTestId('password-input').fill('Password');
-  await page.getByTestId('login-button').click();
-  await page.getByTestId('user-name').click();
-
-  await expect(page.getByTestId('user-name')).toHaveText('Jan Demobankowy');
-});
