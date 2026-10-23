@@ -258,3 +258,17 @@ Then use page in tests:
     const loginPage = new LoginPage(page)
     await loginPage.login(userId, userPassword)
 ```
+
+### GIT commands
+- `git status`
+- `git add .`
+- `git commit -m "example commit"`
+- `git push origin nazwa gałęzi`
+- `git push -u origin nazwa gałęzi` Dzięki flagi -u (upstream), przy kolejnych zmianach na tej gałęzi wystarczy wpisać już samo krótkie git push.
+- `git branch` sprawdzenie na której gałezi jesteś
+- `git checkout nazwa gałęzi` przejście na inną gałęź
+- `git checkout -b nazwa-twojej-nowej-galezi` tworzy nową i przechodzi na nią
+
+
+
+
