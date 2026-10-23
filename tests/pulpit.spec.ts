@@ -21,8 +21,9 @@ test.describe('Pulpit tests', () => {});
 
 // });
 
+
 //quick payment tests - refaktoryzacja - dodanie zmiennych
-test.only('quick payment with correct data', async ({ page }) => {
+test('quick payment with correct data', async ({ page }) => {
   //Arrange
   const baseURL = 'https://demo-bank.vercel.app/';
   const userId = 'test1234';
@@ -53,26 +54,39 @@ test.only('quick payment with correct data', async ({ page }) => {
   ); //zamiast apostrofów można użyć backticków i wstawić zmienne w formacie ${nazwa_zmiennej}
 });
 
-test('quick payment without entering recipient details', async ({ page }) => {
+
+test.only('quick payment without entering recipient details', async ({
+  page,
+}) => {
+
   await page.goto('https://demo-bank.vercel.app/');
   await page.getByTestId('login-input').fill('test1234');
   await page.getByTestId('password-input').fill('Password');
   await page.getByTestId('login-button').click();
+
+  // wait for page to fully load:
+  await page.waitForLoadState('domcontentloaded');
 
   await page.locator('#widget_1_transfer_amount').fill('39');
   await page.locator('#widget_1_transfer_title').fill('przelew');
   await page.locator('#execute_btn').click();
 
+  //Assert
   await expect(page.locator('#error_widget_1_transfer_receiver')).toHaveText(
     'pole wymagane',
   );
 });
 
+
 test('quick payment without entering amount', async ({ page }) => {
+  //Act
   await page.goto('https://demo-bank.vercel.app/');
   await page.getByTestId('login-input').fill('test1234');
   await page.getByTestId('password-input').fill('Password');
   await page.getByTestId('login-button').click();
+
+    // wait for page to fully load:
+  await page.waitForLoadState('domcontentloaded');
 
   await page.locator('#widget_1_transfer_receiver').selectOption('2');
   await page.locator('#widget_1_transfer_title').fill('przelew');
@@ -83,11 +97,16 @@ test('quick payment without entering amount', async ({ page }) => {
   );
 });
 
+
 test('quick payment without entering title', async ({ page }) => {
+
   await page.goto('https://demo-bank.vercel.app/');
   await page.getByTestId('login-input').fill('test1234');
   await page.getByTestId('password-input').fill('Password');
   await page.getByTestId('login-button').click();
+
+  // wait for page to fully load:
+  await page.waitForLoadState('domcontentloaded');
 
   await page.locator('#widget_1_transfer_receiver').selectOption('2');
   await page.locator('#widget_1_transfer_amount').fill('39');
@@ -98,12 +117,17 @@ test('quick payment without entering title', async ({ page }) => {
   );
 });
 
+
 // topup tests
 test('phone top up with correct data', async ({ page }) => {
+
   await page.goto('https://demo-bank.vercel.app/');
   await page.getByTestId('login-input').fill('test1234');
   await page.getByTestId('password-input').fill('Password');
   await page.getByTestId('login-button').click();
+
+  // wait for page to fully load:
+  await page.waitForLoadState('domcontentloaded');
 
   //await page.locator('#widget_1_topup_receiver').selectOption('502 xxx xxx'); //wybieram pełny tekst z atrybutu value
   await page.locator('#widget_1_topup_receiver').selectOption({ index: 2 }); //wybieram po indeksie
@@ -117,11 +141,16 @@ test('phone top up with correct data', async ({ page }) => {
   );
 });
 
+
 test('phone top up without selecting phone number', async ({ page }) => {
+
   await page.goto('https://demo-bank.vercel.app/');
   await page.getByTestId('login-input').fill('test1234');
   await page.getByTestId('password-input').fill('Password');
   await page.getByTestId('login-button').click();
+
+  // wait for page to fully load:
+  await page.waitForLoadState('domcontentloaded');
 
   await page.locator('#widget_1_topup_amount').fill('39');
   await page.locator('#uniform-widget_1_topup_agreement').check();
@@ -132,11 +161,16 @@ test('phone top up without selecting phone number', async ({ page }) => {
   );
 });
 
+
 test('phone top up without entering amount', async ({ page }) => {
+  
   await page.goto('https://demo-bank.vercel.app/');
   await page.getByTestId('login-input').fill('test1234');
   await page.getByTestId('password-input').fill('Password');
   await page.getByTestId('login-button').click();
+
+  //wait for page to fully load:
+  await page.waitForLoadState('domcontentloaded');
 
   await page.locator('#widget_1_topup_receiver').selectOption({ index: 2 });
 

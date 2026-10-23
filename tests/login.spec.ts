@@ -12,7 +12,7 @@ import { test, expect } from '@playwright/test';
 // });
 
 //poprawne logowanie - refaktoryzacja - dodanie zmiennych
-test.only('login with correct credentials', async ({ page }) => {
+test('login with correct credentials', async ({ page }) => {
   //Arrange
   const baseURL = 'https://demo-bank.vercel.app/';
   const userId = 'test1234';
