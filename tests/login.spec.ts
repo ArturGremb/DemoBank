@@ -96,7 +96,7 @@ test('login with empty password', async ({ page }) => {
 });
 
 //walidacja pola hasło, pole hasło jest za krótkie
-test.only('entered password is too short', async ({ page }) => {
+test('entered password is too short', async ({ page }) => {
   const baseURL = 'https://demo-bank.vercel.app/';
   const loginInput = 'login-input';
   const userId = 'test1234';
@@ -119,12 +119,21 @@ test.only('entered password is too short', async ({ page }) => {
 });
 
 //walidacja przycisku 'zaloguj się'
-test('login button to be enabled', async ({ page }) => {
-  await page.goto('https://demo-bank.vercel.app/');
-  await page.getByTestId('login-input').fill('test1234');
-  await page.getByTestId('password-input').fill('Passwor');
-  await page.getByTestId('login-button').click({ force: true });
-  await page.getByTestId('password-input').fill('Password');
+test.only('login button to be enabled', async ({ page }) => {
+  //Arrange
+  const baseURL = 'https://demo-bank.vercel.app/';
+  const userId = 'test1234';
+  const passwordInputField = 'password-input';
+  const userPassword = 'Password';
+  const loginButton = 'login-button';
 
+  //Act
+  await page.goto(baseURL);
+  await page.getByTestId('login-input').fill(userId);
+  await page.getByTestId(passwordInputField).fill('Passwor')
+  await page.getByTestId(loginButton).click({ force: true });
+  await page.getByTestId(passwordInputField).fill(userPassword);
+
+  //Assert
   await expect(page.getByTestId('login-button')).toBeEnabled;
 });
