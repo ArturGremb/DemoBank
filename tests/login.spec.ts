@@ -30,7 +30,7 @@ test('login with correct credentials', async ({ page }) => {
 });
 
 //walidacja pola login, pole login jest puste - podstawowy test
-test('login field is empty', async ({ page }) => {
+test.only('login field is empty', async ({ page }) => {
   //Arrange
   const baseURL = 'https://demo-bank.vercel.app/';
   const passwordField = 'password-input';
@@ -52,14 +52,24 @@ test('login field is empty', async ({ page }) => {
 });
 
 //walidacja pola login, wprowadzony login jest za krórki
-test('entered login is too short', async ({ page }) => {
-  await page.goto('https://demo-bank.vercel.app/');
-  await page.getByTestId('login-input').click();
-  await page.getByTestId('login-input').fill('test123');
-  await page.getByTestId('password-input').click();
+test.only('entered login is too short', async ({ page }) => {
 
-  await expect(page.getByTestId('error-login-id')).toHaveText(
-    'identyfikator ma min. 8 znaków',
+  //Arrange
+  const baseURL = 'https://demo-bank.vercel.app/';
+  const userLogin = 'test123';
+  const passwordField = 'password-input';
+  const errorLoginId = 'error-login-id';
+  const expectedLoginIdErrorMessage = 'identyfikator ma min. 8 znaków';
+
+  //Act
+  await page.goto(baseURL);
+  await page.getByTestId('login-input').click();
+  await page.getByTestId('login-input').fill(userLogin);
+  await page.getByTestId(passwordField).click();
+
+  //Assert
+  await expect(page.getByTestId(errorLoginId)).toHaveText(
+    expectedLoginIdErrorMessage,
   );
 });
 
