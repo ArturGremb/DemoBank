@@ -55,7 +55,7 @@ test('quick payment with correct data', async ({ page }) => {
 });
 
 
-test.only('quick payment without entering recipient details', async ({
+test('quick payment without entering recipient details', async ({
   page,
 }) => {
 
