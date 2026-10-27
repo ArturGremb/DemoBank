@@ -30,7 +30,7 @@ test('login with correct credentials', async ({ page }) => {
 });
 
 //walidacja pola login, pole login jest puste - podstawowy test
-test.only('login field is empty', async ({ page }) => {
+test('login field is empty', async ({ page }) => {
   //Arrange
   const baseURL = 'https://demo-bank.vercel.app/';
   const passwordField = 'password-input';
@@ -52,7 +52,7 @@ test.only('login field is empty', async ({ page }) => {
 });
 
 //walidacja pola login, wprowadzony login jest za krórki
-test.only('entered login is too short', async ({ page }) => {
+test('entered login is too short', async ({ page }) => {
 
   //Arrange
   const baseURL = 'https://demo-bank.vercel.app/';
@@ -74,15 +74,24 @@ test.only('entered login is too short', async ({ page }) => {
 });
 
 //walidacja pola hasło, pole hasło jest puste
-test('login with empty password', async ({ page }) => {
-  await page.goto('https://demo-bank.vercel.app/');
-  //await page.getByTestId('login-input').click(); //tą linijkę mogę usunąć ponieważ poniższa funkcja fill wklika sie sama w pole
-  await page.getByTestId('login-input').fill('test1234');
-  await page.getByTestId('password-input').click();
-  await page.getByTestId('password-input').blur();
+test.only('login with empty password', async ({ page }) => {
+  //Arrange
+  const baseURL = 'https://demo-bank.vercel.app/';
+  const userLogin = 'test1234';
+  const passwordField = 'password-input';
 
-  await expect(page.getByTestId('error-login-password')).toHaveText(
-    'pole wymagane',
+  //Act
+  await page.goto(baseURL);
+  //await page.getByTestId('login-input').click(); //tą linijkę mogę usunąć ponieważ poniższa funkcja fill wklika sie sama w pole
+  await page.getByTestId('login-input').fill(userLogin);
+  await page.getByTestId(passwordField).click();
+  await page.getByTestId(passwordField).blur(); // odklikniecie
+  const errorLoginPassword = 'error-login-password';
+  const loginPasswordErrorMessage = 'pole wymagane';
+
+  //Assert
+  await expect(page.getByTestId(errorLoginPassword)).toHaveText(
+    loginPasswordErrorMessage,
   );
 });
 
