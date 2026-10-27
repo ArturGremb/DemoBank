@@ -74,11 +74,13 @@ test('entered login is too short', async ({ page }) => {
 });
 
 //walidacja pola hasło, pole hasło jest puste
-test.only('login with empty password', async ({ page }) => {
+test('login with empty password', async ({ page }) => {
   //Arrange
   const baseURL = 'https://demo-bank.vercel.app/';
   const userLogin = 'test1234';
   const passwordField = 'password-input';
+  const errorLoginPassword = 'error-login-password';
+  const loginPasswordErrorMessage = 'pole wymagane';
 
   //Act
   await page.goto(baseURL);
@@ -86,8 +88,6 @@ test.only('login with empty password', async ({ page }) => {
   await page.getByTestId('login-input').fill(userLogin);
   await page.getByTestId(passwordField).click();
   await page.getByTestId(passwordField).blur(); // odklikniecie
-  const errorLoginPassword = 'error-login-password';
-  const loginPasswordErrorMessage = 'pole wymagane';
 
   //Assert
   await expect(page.getByTestId(errorLoginPassword)).toHaveText(
