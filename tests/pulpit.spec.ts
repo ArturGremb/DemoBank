@@ -55,7 +55,7 @@ test('quick payment with correct data', async ({ page }) => {
 });
 
 
-test.only('quick payment without entering recipient details', async ({
+test('quick payment without entering recipient details', async ({
   page,
 }) => {
   //Arrange
@@ -133,24 +133,33 @@ test('quick payment without entering title', async ({ page }) => {
 
 // topup tests
 test('phone top up with correct data', async ({ page }) => {
+  //Arrange
+  const baseURL = 'https://demo-bank.vercel.app/';
+  const userId = 'test1234';
+  const userPassword = 'Password';
+  const loginButton = 'login-button';
+  const topupReceiver = '502 xxx xxx'; //wybieram po indeksie, można też wybrać po value lub label
+  const topupAmount = '39';
 
-  await page.goto('https://demo-bank.vercel.app/');
-  await page.getByTestId('login-input').fill('test1234');
-  await page.getByTestId('password-input').fill('Password');
-  await page.getByTestId('login-button').click();
+  //Act
+  await page.goto(baseURL);
+  await page.getByTestId('login-input').fill(userId);
+  await page.getByTestId('password-input').fill(userPassword);
+  await page.getByTestId(loginButton).click();
 
   // wait for page to fully load:
   await page.waitForLoadState('domcontentloaded');
 
-  //await page.locator('#widget_1_topup_receiver').selectOption('502 xxx xxx'); //wybieram pełny tekst z atrybutu value
-  await page.locator('#widget_1_topup_receiver').selectOption({ index: 2 }); //wybieram po indeksie
-  await page.locator('#widget_1_topup_amount').fill('39');
+  await page.locator('#widget_1_topup_receiver').selectOption(topupReceiver); //wybieram pełny tekst z atrybutu value
+  //await page.locator('#widget_1_topup_receiver').selectOption(topupReceiver); //wybieram po indeksie
+  await page.locator('#widget_1_topup_amount').fill(topupAmount);
   await page.locator('#uniform-widget_1_topup_agreement span').check(); //checkowanie checkboxa
   await page.locator('#execute_phone_btn').click();
   await page.getByTestId('close-button').click();
 
+  //Assert
   await expect(page.getByTestId('message-text')).toHaveText(
-    'Doładowanie wykonane! 39,00PLN na numer 502 xxx xxx',
+    `Doładowanie wykonane! ${topupAmount},00PLN na numer ${topupReceiver}`,
   );
 });
 

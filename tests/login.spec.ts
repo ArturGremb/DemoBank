@@ -42,7 +42,7 @@ test('login field is empty', async ({ page }) => {
   //Act
   await page.goto(baseURL);
   await page.getByTestId(passwordField).click();
-  await page.getByTestId(passwordField).fill('userPassword');
+  await page.getByTestId(passwordField).fill(userPassword);
   await page.getByTestId(loginField).click();
   await page.getByTestId(loginField).blur(); // funkcja blur() na polu password służy do opuszczenia pola na którym w danej chwili jesteśmy
   await page.getByTestId(errorLoginId).click();
