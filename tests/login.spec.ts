@@ -119,7 +119,7 @@ test('entered password is too short', async ({ page }) => {
 });
 
 //walidacja przycisku 'zaloguj się'
-test.only('login button to be enabled', async ({ page }) => {
+test('login button to be enabled', async ({ page }) => {
   //Arrange
   const baseURL = 'https://demo-bank.vercel.app/';
   const userId = 'test1234';

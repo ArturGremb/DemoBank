@@ -55,25 +55,38 @@ test('quick payment with correct data', async ({ page }) => {
 });
 
 
-test('quick payment without entering recipient details', async ({
+test.only('quick payment without entering recipient details', async ({
   page,
 }) => {
+  //Arrange
+  const baseURL = 'https://demo-bank.vercel.app/';
+  const loginInput = 'login-input';
+  const userId = 'test1234';
+  const passwordInput = 'password-input';
+  const userPassword = 'Password';
+  const loginButton = 'login-button';
+  const paymentAmount = '50';
+  const paymentTitle = 'przelew';
+  const executeButton = '#execute_btn';
+  const transferReceiverErrorMessage = 'pole wymagane';
+  const transferReceiverWidget = '#error_widget_1_transfer_receiver';
 
-  await page.goto('https://demo-bank.vercel.app/');
-  await page.getByTestId('login-input').fill('test1234');
-  await page.getByTestId('password-input').fill('Password');
-  await page.getByTestId('login-button').click();
+  //Act
+  await page.goto(baseURL);
+  await page.getByTestId(loginInput).fill(userId);
+  await page.getByTestId(passwordInput).fill(userPassword);
+  await page.getByTestId(loginButton).click();
 
   // wait for page to fully load:
   await page.waitForLoadState('domcontentloaded');
 
-  await page.locator('#widget_1_transfer_amount').fill('39');
-  await page.locator('#widget_1_transfer_title').fill('przelew');
-  await page.locator('#execute_btn').click();
+  await page.locator('#widget_1_transfer_amount').fill(paymentAmount);
+  await page.locator('#widget_1_transfer_title').fill(paymentTitle);
+  await page.locator(executeButton).click();
 
   //Assert
-  await expect(page.locator('#error_widget_1_transfer_receiver')).toHaveText(
-    'pole wymagane',
+  await expect(page.locator(transferReceiverWidget)).toHaveText(
+    transferReceiverErrorMessage,
   );
 });
 
